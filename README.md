@@ -23,4 +23,4 @@ Typically, you'd invoke the script it by keyboard shortcuts, for example ``Super
 ```
 
 ## Credits
-Credits to [Peter.O](https://unix.stackexchange.com/a/14170) for hints on how to properly account for decorations.
+Credits to [Colin Keenan](https://unix.stackexchange.com/a/156349) for hints on how to properly account for decorations.
