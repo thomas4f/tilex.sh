@@ -4,9 +4,9 @@ Bash script that moves windows to preset positions in X.
 ![tilex](https://user-images.githubusercontent.com/51061686/146162894-2e70d505-ae69-47b6-8b0b-2188b2d95742.png)
 
 ## Description
-tilex.sh is a small batch script that allows you to effortlessly position windows in X.
+tilex.sh is a small batch script that allows you to effortlessly create grids to position/tile windows in X.
 
-It supports gaps, presets configured either in pixels or percent, and cycling through multiple presets.
+It supports gaps, presets configured either in pixels or in percent, and cycling through multiple presets.
 
 The script should (hopefully) properly account for window decorations, title bars and ensure that windows do not overlap.
 
@@ -21,6 +21,9 @@ Typically, you'd invoke the script it by keyboard shortcuts, for example ``Super
 ```console
 ./tilex.sh left
 ```
+
+## Requirements
+``wmctrl`` and ``xwininfo``.
 
 ## Credits
 - Credits to [Colin Keenan](https://unix.stackexchange.com/a/156349) for hints on how to properly account for decorations.
