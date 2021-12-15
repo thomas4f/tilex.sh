@@ -23,7 +23,15 @@ Typically, you'd invoke the script it by keyboard shortcuts, for example ``Super
 ```
 
 ## Requirements
-``wmctrl`` and ``xwininfo``. Both seem to be available in most package repositories.
+``wmctrl`` and ``xwininfo``. Both seem to be available in most package repositories. For example:
+
+```console
+# Arch Linux
+pacman -S wmctrl xorg-xwininfo
+
+# Debian and derivatives
+apt install x11-utils wmctrl
+```
 
 ## Credits
 - Credits to [Colin Keenan](https://unix.stackexchange.com/a/156349) for hints on how to properly account for decorations.
