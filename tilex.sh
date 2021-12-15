@@ -9,6 +9,7 @@
 # General settings
 SCREEN_WIDTH=3440
 SCREEN_HEIGHT=1440
+MENU_POSITION=top
 MENU_HEIGHT=33
 GAP_SIZE=3
 STATE_FILE=/tmp/tilex.tmp
@@ -18,17 +19,17 @@ left_top[0]=0%,0%,30%,50%
 left[0]=0%,0%,30%,100%
 left[1]=0%,0%,50%,100%
 left_bottom[0]=0%,50%,30%,50%
-center_top[0]=0%,0%,100%,50%
+top[0]=0%,0%,100%,50%
 center[0]=30%,0%,40%,100%
 center[1]=0%,0%,100%,100%
-center_bottom[0]=0%,50%,100%,50%
+bottom[0]=0%,50%,100%,50%
 right_top[0]=70%,0%,30%,50%
 right[0]=70%,0%,30%,100%
 right[1]=50%,0%,50%,100%
 right_bottom[0]=70%,50%,30%,50%
 
 check_requirements() {
-  if [ $# -ne 1 ]; then
+  if [[ $# -ne 1 ]]; then
     echo -e "  Usage: $0 \e[3mposition\e[0m" && exit 1
   fi 
   
@@ -38,13 +39,13 @@ check_requirements() {
   
   declare -gn POS=$1
   
-  if [ -z $POS ]; then
+  if [[ -z $POS ]]; then
     echo "  No such position." && exit 1
   fi
 }
 
 function get_window_position() {
-  if ! source "${STATE_FILE}" &>/dev/null || [ -z "${CUR_POS[${!POS}]}" ]; then
+  if ! source "${STATE_FILE}" &>/dev/null || [[ -z "${CUR_POS[${!POS}]}" ]]; then
     declare -gA CUR_POS
     CUR_POS[${!POS}]=0
   fi
@@ -71,13 +72,15 @@ function set_window_geometry() {
   [[ $WIDTH == *"%" ]] && WIDTH=$(( ${WIDTH::-1}*SCREEN_WIDTH/100 ))
   [[ $HEIGHT == *"%" ]] && HEIGHT=$(( ${HEIGHT::-1}*SCREEN_HEIGHT/100 ))
     
-  # Correct top windows for menu height
-  if [[ $Y -eq 0 ]]; then
+  # Correct windows for menu00
+  if [[ $MENU_POSITION == "top"  && $Y -eq 0 ]]; then
     Y=$(( Y+MENU_HEIGHT ))
     HEIGHT=$(( HEIGHT-MENU_HEIGHT ))
+  elif [[ $MENU_POSITION == "bottom" && ( $HEIGHT = "$SCREEN_HEIGHT" || $Y -ne 0 ) ]]; then
+    HEIGHT=$(( HEIGHT-MENU_HEIGHT ))
   fi
-
-  # Correct all windows for decorations and gap
+  
+  # Correct windows for decorations and gap
   X=$(( X+GAP_SIZE ))
   Y=$(( Y+GAP_SIZE ))
   WIDTH=$(( WIDTH-X_OFFSET*2-GAP_SIZE*2 ))
@@ -88,7 +91,7 @@ function set_window_geometry() {
 }
 
 function cycle_window_position() {
-  if [ "${CUR_POS[${!POS}]}" -lt $(( ${#POS[@]}-1 )) ]; then
+  if [[ "${CUR_POS[${!POS}]}" -lt $(( ${#POS[@]}-1 )) ]]; then
     (( CUR_POS[${!POS}]++ ))
   else
     CUR_POS[${!POS}]=0
@@ -97,7 +100,7 @@ function cycle_window_position() {
   declare -Ap CUR_POS | sed 's/ -A/&g/' > ${STATE_FILE}
 }
 
-check_requirements $1
+check_requirements "$1"
 get_window_position
 set_window_geometry
 cycle_window_position
