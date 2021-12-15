@@ -30,7 +30,7 @@ Typically, you'd invoke the script it by keyboard shortcuts, for example ``Super
 pacman -S wmctrl xorg-xwininfo
 
 # Debian and derivatives
-apt install x11-utils wmctrl
+apt install wmctrl x11-utils
 ```
 
 ## Credits
