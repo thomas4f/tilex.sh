@@ -13,7 +13,7 @@ The script should (hopefully) properly account for window decorations, title bar
 ## How to use
 1. First, configure your screen width and height, menu position and it's height, as well as your preferred gap size. 
 2. Next, configure your window position presets as arrays, with X, Y, width and height values separated by commas.
-3. Finally, invoke the script, with the desired position as the only argument. 
+3. Finally, invoke the script with the desired position as the first argument. Optionally provide an index to set it directly rather than cycling. 
 
 Typically, you'd invoke the script it by keyboard shortcuts, for example ``Super + num7`` to cycle between left_top positions, ``Super + num5`` for center positions, etc.
 
