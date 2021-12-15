@@ -8,7 +8,7 @@ tilex.sh is a small batch script that allows you to effortlessly position window
 
 It supports gaps, presets configured either in pixels or percent, and cycling through multiple presets.
 
-The script should properly account for window decorations, title bars and ensure that windows do not overlap.
+The script should (hopefully) properly account for window decorations, title bars and ensure that windows do not overlap.
 
 ## How to use
 1. First, configure your screen width, height, menu height and preferred gap size. 
@@ -23,4 +23,5 @@ Typically, you'd invoke the script it by keyboard shortcuts, for example ``Super
 ```
 
 ## Credits
-Credits to [Colin Keenan](https://unix.stackexchange.com/a/156349) for hints on how to properly account for decorations.
+- Credits to [Colin Keenan](https://unix.stackexchange.com/a/156349) for hints on how to properly account for decorations.
+- The cycling feature was inspired by [WinSplit](https://github.com/dozius/winsplit-revolution).
