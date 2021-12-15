@@ -71,15 +71,15 @@ function set_window_geometry() {
   [[ $Y == *"%" ]] && Y=$(( ${Y::-1}*SCREEN_HEIGHT/100 ))
   [[ $WIDTH == *"%" ]] && WIDTH=$(( ${WIDTH::-1}*SCREEN_WIDTH/100 ))
   [[ $HEIGHT == *"%" ]] && HEIGHT=$(( ${HEIGHT::-1}*SCREEN_HEIGHT/100 ))
-    
-  # Correct windows for menu00
+
+  # Correct windows for menu
   if [[ $MENU_POSITION == "top"  && $Y -eq 0 ]]; then
     Y=$(( Y+MENU_HEIGHT ))
     HEIGHT=$(( HEIGHT-MENU_HEIGHT ))
   elif [[ $MENU_POSITION == "bottom" && ( $HEIGHT = "$SCREEN_HEIGHT" || $Y -ne 0 ) ]]; then
     HEIGHT=$(( HEIGHT-MENU_HEIGHT ))
   fi
-  
+
   # Correct windows for decorations and gap
   X=$(( X+GAP_SIZE ))
   Y=$(( Y+GAP_SIZE ))
