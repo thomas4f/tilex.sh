@@ -1,20 +1,20 @@
 #!/bin/bash
 
-# tilex.sh - Bash script that moves windows to preset positions in X.
+# tilex.sh - Bash script that moves windows to preset positions in x.
 # Most useful if configured to be launched with keyboard shortcuts.
 # 
-# Tested with XFCE with default positions for 3440x1440.
+# Tested with xFCE with default positions for 3440x1440.
 # Example: ./tilex.sh left
 
 # General settings
-SCREEN_WIDTH=3440
-SCREEN_HEIGHT=1440
-MENU_POSITION=top
-MENU_HEIGHT=33
-GAP_SIZE=3
-STATE_FILE=/tmp/tilex.tmp
+screen_width=3440
+screen_height=1440
+menu_position=top
+menu_height=33
+gap_size=3
+state_file=/tmp/tilex.tmp
 
-# Window positions (X, Y, WIDTH, HEIGHT)
+# Window positions (x, y, width, height)
 left_top[0]=0%,0%,30%,50%
 left[0]=0%,0%,30%,100%
 left[1]=0%,0%,50%,100%
@@ -29,7 +29,7 @@ right[1]=50%,0%,50%,100%
 right_bottom[0]=70%,50%,30%,50%
 
 check_requirements() {
-  if [[ $# -ne 1 ]]; then
+  if [[ -z $1 ]]; then
     echo -e "  Usage: $0 \e[3mposition\e[0m" && exit 1
   fi 
   
@@ -37,67 +37,67 @@ check_requirements() {
     echo "  Please install wmctrl and xwininfo." && exit 1
   fi
   
-  declare -gn POS=$1
+  declare -gn pos=$1
   
-  if [[ -z $POS ]]; then
+  if [[ -z $pos ]]; then
     echo "  No such position." && exit 1
   fi
 }
 
-function get_window_position() {
-  if ! source "${STATE_FILE}" &>/dev/null || [[ -z "${CUR_POS[${!POS}]}" ]]; then
-    declare -gA CUR_POS
-    CUR_POS[${!POS}]=0
+get_window_position() {
+  if ! source "${state_file}" &>/dev/null || [[ -z "${cur_pos[${!pos}]}" ]]; then
+    declare -gA cur_pos
+    cur_pos[${!pos}]=0
   fi
 }
 
-function set_window_geometry() {
+set_window_geometry() {
   # Unmaximize the window to get proper decoration geometry
   wmctrl -r :ACTIVE: -b remove,maximized_vert,maximized_horz
 
   # Get decoration geometry
-  OFFSETS=$(xwininfo -id "$(xdotool getactivewindow)" | \
+  offsetS=$(xwininfo -id "$(xdotool getactivewindow)" | \
     grep -oP "Relative.*:  \K.*" | tr '\n' ,',')
 
-  X=$(cut -d',' -f1 <<< "${POS[${CUR_POS[${!POS}]}]}")
-  Y=$(cut -d',' -f2 <<< "${POS[${CUR_POS[${!POS}]}]}")
-  WIDTH=$(cut -d',' -f3 <<< "${POS[${CUR_POS[${!POS}]}]}")
-  HEIGHT=$(cut -d',' -f4 <<< "${POS[${CUR_POS[${!POS}]}]}")
-  X_OFFSET=$(cut -d',' -f1 <<< "$OFFSETS")
-  Y_OFFSET=$(cut -d',' -f2 <<< "$OFFSETS")
+  x=$(cut -d',' -f1 <<< "${pos[${cur_pos[${!pos}]}]}")
+  y=$(cut -d',' -f2 <<< "${pos[${cur_pos[${!pos}]}]}")
+  width=$(cut -d',' -f3 <<< "${pos[${cur_pos[${!pos}]}]}")
+  height=$(cut -d',' -f4 <<< "${pos[${cur_pos[${!pos}]}]}")
+  x_offset=$(cut -d',' -f1 <<< "$offsetS")
+  y_offset=$(cut -d',' -f2 <<< "$offsetS")
 
   # Convert percent to pixels
-  [[ $X == *"%" ]] && X=$(( ${X::-1}*SCREEN_WIDTH/100 ))
-  [[ $Y == *"%" ]] && Y=$(( ${Y::-1}*SCREEN_HEIGHT/100 ))
-  [[ $WIDTH == *"%" ]] && WIDTH=$(( ${WIDTH::-1}*SCREEN_WIDTH/100 ))
-  [[ $HEIGHT == *"%" ]] && HEIGHT=$(( ${HEIGHT::-1}*SCREEN_HEIGHT/100 ))
+  [[ $x == *"%" ]] && x=$(( ${x::-1}*screen_width/100 ))
+  [[ $y == *"%" ]] && y=$(( ${y::-1}*screen_height/100 ))
+  [[ $width == *"%" ]] && width=$(( ${width::-1}*screen_width/100 ))
+  [[ $height == *"%" ]] && height=$(( ${height::-1}*screen_height/100 ))
 
   # Correct windows for menu
-  if [[ $MENU_POSITION == "top"  && $Y -eq 0 ]]; then
-    Y=$(( Y+MENU_HEIGHT ))
-    HEIGHT=$(( HEIGHT-MENU_HEIGHT ))
-  elif [[ $MENU_POSITION == "bottom" && ( $HEIGHT = "$SCREEN_HEIGHT" || $Y -ne 0 ) ]]; then
-    HEIGHT=$(( HEIGHT-MENU_HEIGHT ))
+  if [[ $menu_position == "top"  && $y -eq 0 ]]; then
+    y=$(( y+menu_height ))
+    height=$(( height-menu_height ))
+  elif [[ $menu_position == "bottom" && ( $height = "$screen_height" || $y -ne 0 ) ]]; then
+    height=$(( height-menu_height ))
   fi
 
   # Correct windows for decorations and gap
-  X=$(( X+GAP_SIZE ))
-  Y=$(( Y+GAP_SIZE ))
-  WIDTH=$(( WIDTH-X_OFFSET*2-GAP_SIZE*2 ))
-  HEIGHT=$(( HEIGHT-X_OFFSET-Y_OFFSET-GAP_SIZE*2 ))
+  x=$(( x+gap_size ))
+  y=$(( y+gap_size ))
+  width=$(( width-x_offset*2-gap_size*2 ))
+  height=$(( height-x_offset-y_offset-gap_size*2 ))
     
   # Move and resize window
-  wmctrl -r :ACTIVE: -e 0,$X,$Y,$WIDTH,$HEIGHT
+  wmctrl -r :ACTIVE: -e 0,$x,$y,$width,$height
 }
 
-function cycle_window_position() {
-  if [[ "${CUR_POS[${!POS}]}" -lt $(( ${#POS[@]}-1 )) ]]; then
-    (( CUR_POS[${!POS}]++ ))
+cycle_window_position() {
+  if [[ "${cur_pos[${!pos}]}" -lt $(( ${#pos[@]}-1 )) ]]; then
+    (( cur_pos[${!pos}]++ ))
   else
-    CUR_POS[${!POS}]=0
+    cur_pos[${!pos}]=0
   fi
 
-  declare -Ap CUR_POS | sed 's/ -A/&g/' > ${STATE_FILE}
+  declare -Ap cur_pos | sed 's/ -A/&g/' > ${state_file}
 }
 
 check_requirements "$1"
