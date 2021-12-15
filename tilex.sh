@@ -56,15 +56,15 @@ set_window_geometry() {
   wmctrl -r :ACTIVE: -b remove,maximized_vert,maximized_horz
 
   # Get decoration geometry
-  offsetS=$(xwininfo -id "$(xdotool getactivewindow)" | \
+  offsets=$(xwininfo -id "$(xdotool getactivewindow)" | \
     grep -oP "Relative.*:  \K.*" | tr '\n' ,',')
 
   x=$(cut -d',' -f1 <<< "${pos[${cur_pos[${!pos}]}]}")
   y=$(cut -d',' -f2 <<< "${pos[${cur_pos[${!pos}]}]}")
   width=$(cut -d',' -f3 <<< "${pos[${cur_pos[${!pos}]}]}")
   height=$(cut -d',' -f4 <<< "${pos[${cur_pos[${!pos}]}]}")
-  x_offset=$(cut -d',' -f1 <<< "$offsetS")
-  y_offset=$(cut -d',' -f2 <<< "$offsetS")
+  x_offset=$(cut -d',' -f1 <<< "$offsets")
+  y_offset=$(cut -d',' -f2 <<< "$offsets")
 
   # Convert percent to pixels
   [[ $x == *"%" ]] && x=$(( ${x::-1}*screen_width/100 ))
