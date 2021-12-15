@@ -11,7 +11,7 @@ It supports gaps, presets configured either in pixels or in percent, and cycling
 The script should (hopefully) properly account for window decorations, title bars and ensure that windows do not overlap.
 
 ## How to use
-1. First, configure your screen width, height, menu height and preferred gap size. 
+1. First, configure your screen width and height, menu position and it's height, as well as your preferred gap size. 
 2. Next, configure your window position presets as arrays, with X, Y, width and height values separated by commas.
 3. Finally, invoke the script, with the desired position as the only argument. 
 
@@ -23,7 +23,7 @@ Typically, you'd invoke the script it by keyboard shortcuts, for example ``Super
 ```
 
 ## Requirements
-``wmctrl`` and ``xwininfo``.
+``wmctrl`` and ``xwininfo``. Both seem to be available in most package repositories.
 
 ## Credits
 - Credits to [Colin Keenan](https://unix.stackexchange.com/a/156349) for hints on how to properly account for decorations.
