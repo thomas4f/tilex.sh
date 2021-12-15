@@ -94,7 +94,7 @@ function cycle_window_position() {
     CUR_POS[${!POS}]=0
   fi
 
-  declare -Ap CUR_POS | sed 's/ -[aA]/&g/' > ${STATE_FILE}
+  declare -Ap CUR_POS | sed 's/ -A/&g/' > ${STATE_FILE}
 }
 
 check_requirements $1
