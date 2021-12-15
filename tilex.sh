@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# tilex.sh - Bash script that moves windows to preset positions in x.
+# tilex.sh - Bash script that moves windows to preset positions in X.
 # Most useful if configured to be launched with keyboard shortcuts.
 # 
-# Tested with xFCE with default positions for 3440x1440.
+# Tested with XFCE with default positions for 3440x1440.
 # Example: ./tilex.sh left
 
 # General settings
