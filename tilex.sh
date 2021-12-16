@@ -68,8 +68,8 @@ set_window_geometry() {
   height=$(cut -d',' -f4 <<< "${pos[${cur_pos[${!pos}]}]}")
 
   # Get frame extents (eg: titlebar, borders)
-  IFS=", " read -r x_left x_right x_top x_bottom \ 
-    <<< $(xprop _GTK_FRAME_EXTENTS _NET_FRAME_EXTENTS -id "$window_id" | grep -oP " = \K.*")
+  IFS=", " read -r extent_left extent_right extent_top extent_bottom <<< \
+    $(xprop _GTK_FRAME_EXTENTS _NET_FRAME_EXTENTS -id "$window_id" | grep -oP " = \K.*")
 
   # Convert percent to pixels
   [[ $x == *"%" ]] && x=$(( ${x::-1}*screen_width/100 ))
@@ -93,8 +93,8 @@ set_window_geometry() {
   # Correct window for decorations and gap
   x=$(( x+gap_size ))
   y=$(( y+gap_size ))
-  width=$(( width-x_left-x_right-gap_size*2 ))
-  height=$(( height-x_top-x_bottom-gap_size*2 ))
+  width=$(( width-extent_left-extent_right-gap_size*2 ))
+  height=$(( height-extent_top-extent_bottom-gap_size*2 ))
   
   # Move and resize window
   wmctrl -i -r "$window_id" -e 0,$x,$y,$width,$height
