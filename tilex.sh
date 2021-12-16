@@ -35,8 +35,8 @@ check_requirements() {
     echo "  Usage: $0 name [index]" && exit 1
   fi 
   
-  if ! command -v wmctrl &>/dev/null || ! command -v xwininfo &>/dev/null; then
-    echo "  Please install wmctrl and xwininfo." && exit 1
+  if ! command -v wmctrl &>/dev/null || ! command -v xprop &>/dev/null; then
+    echo "  Please install wmctrl and xprop." && exit 1
   fi
   
   declare -ng pos=$1
@@ -57,19 +57,19 @@ get_window_position() {
 }
 
 set_window_geometry() {
-  # Unmaximize the window to get proper decoration geometry
-  wmctrl -r :ACTIVE: -b remove,maximized_vert,maximized_horz
+  # Unmaximize and get current window id
+  window_id=$(wmctrl -r :ACTIVE: -b remove,maximized_vert,maximized_horz -v 2>&1 | \
+    grep -oP "Using window: \K.*")
 
-  # Get decoration geometry
-  offsets=$(xwininfo -id "$(xdotool getactivewindow)" | \
-    grep -oP "Relative.*:  \K.*" | tr '\n' ,',')
-
+  # Get positions from array
   x=$(cut -d',' -f1 <<< "${pos[${cur_pos[${!pos}]}]}")
   y=$(cut -d',' -f2 <<< "${pos[${cur_pos[${!pos}]}]}")
   width=$(cut -d',' -f3 <<< "${pos[${cur_pos[${!pos}]}]}")
   height=$(cut -d',' -f4 <<< "${pos[${cur_pos[${!pos}]}]}")
-  x_offset=$(cut -d',' -f1 <<< "$offsets")
-  y_offset=$(cut -d',' -f2 <<< "$offsets")
+
+  # Get frame extents (eg: titlebar, borders)
+  IFS=", " read x_left x_right x_top x_bottom <<< \
+    $(xprop _GTK_FRAME_EXTENTS _NET_FRAME_EXTENTS -id $window_id | grep -oP " = \K.*")
 
   # Convert percent to pixels
   [[ $x == *"%" ]] && x=$(( ${x::-1}*screen_width/100 ))
@@ -93,11 +93,11 @@ set_window_geometry() {
   # Correct window for decorations and gap
   x=$(( x+gap_size ))
   y=$(( y+gap_size ))
-  width=$(( width-x_offset*2-gap_size*2 ))
-  height=$(( height-x_offset-y_offset-gap_size*2 ))
-    
+  width=$(( width-x_left-x_right-gap_size*2 ))
+  height=$(( height-x_top-x_bottom-gap_size*2 ))
+  
   # Move and resize window
-  wmctrl -r :ACTIVE: -e 0,$x,$y,$width,$height
+  wmctrl -i -r $window_id -e 0,$x,$y,$width,$height
 }
 
 cycle_window_position() {
