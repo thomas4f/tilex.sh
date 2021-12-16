@@ -7,15 +7,16 @@
 # Usage: ./tilex.sh name [index]
 # Example: ./tilex.sh left 0
 
-# General settings
+# General settings (numeric values in px)
 screen_width=3440
 screen_height=1440
 menu_position=top
-menu_height=33
+menu_size=33
 gap_size=5
 state_file=/tmp/tilex.tmp
 
-# Window positions (x, y, width, height)
+# Window positions (in px or %)
+# x, y, width, height
 left_top[0]=0%,0%,30%,50%
 left[0]=0%,0%,30%,100%
 left[1]=0%,0%,50%,100%
@@ -77,11 +78,16 @@ set_window_geometry() {
   [[ $height == *"%" ]] && height=$(( ${height::-1}*screen_height/100 ))
 
   # Correct window for menu
-  if [[ $menu_position == "top"  && $y -eq 0 ]]; then
-    y=$(( y+menu_height ))
-    height=$(( height-menu_height ))
+  if [[ $menu_position == "top" && $y -eq 0 ]]; then
+    y=$(( y+menu_size ))
+    height=$(( height-menu_size ))
+  elif [[ $menu_position == "right" && ( $width = "$screen_width" || $x -ne 0 ) ]]; then
+    width=$(( width-menu_size ))
   elif [[ $menu_position == "bottom" && ( $height = "$screen_height" || $y -ne 0 ) ]]; then
-    height=$(( height-menu_height ))
+    height=$(( height-menu_size ))
+  elif [[ $menu_position == "left" && $x -eq 0 ]]; then
+    x=$(( x+menu_size ))
+    width=$(( width-menu_size ))
   fi
 
   # Correct window for decorations and gap
