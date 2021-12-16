@@ -23,11 +23,11 @@ Typically, you'd invoke the script it by keyboard shortcuts, for example ``Super
 ```
 
 ## Requirements
-``wmctrl`` and ``xwininfo``. Both seem to be available in most package repositories. For example:
+``wmctrl`` and ``xprop``. Both seem to be available in most package repositories. For example:
 
 ```console
 # Arch Linux
-pacman -S wmctrl xorg-xwininfo
+pacman -S wmctrl xorg-xprop
 
 # Debian and derivatives
 apt install wmctrl x11-utils
@@ -66,6 +66,14 @@ center[0]=33%,0%,40%,100%
 top_right[0]=70%,0%,30%,50%
 bottom_right[0]=70%,50%,30%,50%
 ```
+
+## Caveats
+- Some environments (such as Ubuntu/Gnome) uses decorations with massive shadows that increase the frame extents, effectively creating huge gaps between windows.
+- Also, there's no nice way to account for multiple menus/sidebars.
+
+Feel free to fix this yourself, for example by experimenting the extent variables (``x_left``, ``x_right``, etc) and create a PR if you find a nice solution!
+
+
 
 ## Credits
 - Credits to [Colin Keenan](https://unix.stackexchange.com/a/156349) for hints on how to properly account for decorations.
