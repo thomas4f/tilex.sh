@@ -32,7 +32,43 @@ pacman -S wmctrl xorg-xwininfo
 # Debian and derivatives
 apt install wmctrl x11-utils
 ```
+## Customization
+Here are some presets inspired by [PowerToys FancyZones](https://docs.microsoft.com/en-us/windows/powertoys/fancyzones):
+### 3 columns
+```console
+# 3 Columns
+left[0]=0%,0%,33%,100%
+center[0]=33%,0%,34%,100%
+right[0]=67%,0%,33%,100%
+```
+
+### 3 rows
+```console
+# 3 Rows
+top[0]=0%,0%,100%,33%
+center[0]=0%,33%,100%,34%
+bottom[0]=0%,67%,100%,33%
+```
+### 4x4
+```console
+# 4x4
+top_left[0]=0%,0%,50%,50%
+bottom_left[0]=0%,50%,50%,50%
+top_right[0]=50%,0%,50%,50%
+bottom_right[0]=50%,50%,50%,50%
+```
+
+### Priority grid
+```console
+# Priority grid
+left[0]=0%,0%,30%,100%
+center[0]=33%,0%,40%,100%
+top_right[0]=70%,0%,30%,50%
+bottom_right[0]=70%,50%,30%,50%
+```
 
 ## Credits
 - Credits to [Colin Keenan](https://unix.stackexchange.com/a/156349) for hints on how to properly account for decorations.
 - The cycling feature was inspired by [WinSplit](https://github.com/dozius/winsplit-revolution).
+
+_It's not exactly FancyZones, but it gets the job done! :)_
