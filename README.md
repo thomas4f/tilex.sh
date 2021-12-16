@@ -68,7 +68,7 @@ bottom_right[0]=70%,50%,30%,50%
 ```
 
 ## Caveats
-- Some environments (such as Ubuntu/Gnome) uses decorations with massive shadows that increase the frame extents, effectively creating huge gaps between windows.
+- Some environments (such as Ubuntu/Gnome) use decorations with massive shadows that increase the frame extents, effectively creating huge gaps between windows.
 - Also, there's no nice way to account for multiple menus/sidebars.
 
 Feel free to fix this yourself, for example by experimenting the extent variables (``x_left``, ``x_right``, etc) and create a PR if you find a nice solution!
