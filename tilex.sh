@@ -19,7 +19,7 @@ state_file=/tmp/tilex.tmp
 # x, y, width, height
 left_top[0]=0%,0%,30%,50%
 left[0]=0%,0%,30%,100%
-left[1]=0%,0%,50%,100%
+#left[1]=0%,0%,50%,100%
 left_bottom[0]=0%,50%,30%,50%
 top[0]=0%,0%,100%,50%
 center[0]=30%,0%,40%,100%
@@ -27,7 +27,7 @@ center[1]=0%,0%,100%,100%
 bottom[0]=0%,50%,100%,50%
 right_top[0]=70%,0%,30%,50%
 right[0]=70%,0%,30%,100%
-right[1]=50%,0%,50%,100%
+#right[1]=50%,0%,50%,100%
 right_bottom[0]=70%,50%,30%,50%
 
 check_requirements() {
@@ -68,8 +68,8 @@ set_window_geometry() {
   height=$(cut -d',' -f4 <<< "${pos[${cur_pos[${!pos}]}]}")
 
   # Get frame extents (eg: titlebar, borders)
-  IFS=", " read -r extent_left extent_right extent_top extent_bottom <<< \
-    $(xprop _GTK_FRAME_EXTENTS _NET_FRAME_EXTENTS -id "$window_id" | grep -oP " = \K.*")
+  IFS=", " read -r extent_left extent_right extent_top extent_bottom \
+    <<< $(xprop _GTK_FRAME_EXTENTS _NET_FRAME_EXTENTS -id "$window_id" | grep -oP " = \K.*")
 
   # Convert percent to pixels
   [[ $x == *"%" ]] && x=$(( ${x::-1}*screen_width/100 ))
