@@ -1,7 +1,7 @@
 # tilex.sh
 Bash script that moves windows to preset positions in X.
 
-![tilex](https://user-images.githubusercontent.com/51061686/146162894-2e70d505-ae69-47b6-8b0b-2188b2d95742.png)
+![tilex](https://user-images.githubusercontent.com/51061686/146513147-47c57845-53ec-4d5b-b29d-2740655de9d4.gif)
 
 ## Description
 tilex.sh is a leight weight shell script that allows you to effortlessly create grids to position/tile windows in X.
