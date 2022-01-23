@@ -68,9 +68,8 @@ set_window_geometry() {
   height=$(cut -d',' -f4 <<< "${pos[${cur_pos[${!pos}]}]}")
 
   # Get frame extents (eg: titlebar, borders)
-  # <greybot> This creates a temporary file and dumps the entire output of the command substitution into it before beginning execution of any command that reads from the herestring. It is almost always a useless construct. You probably want to use a simple pipe instead unless you have some specific reason for wanting this. A proper equivalent is < <(
   IFS=", " read -r extent_left extent_right extent_top extent_bottom \
-    <<< $(xprop _NET_FRAME_EXTENTS _GTK_FRAME_EXTENTS -id "$window_id" | \
+    < <(xprop _NET_FRAME_EXTENTS _GTK_FRAME_EXTENTS -id "$window_id" | \
     grep -m1 -oP " = \K.*")
 
   # Convert percent to pixels
