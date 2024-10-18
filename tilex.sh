@@ -4,7 +4,7 @@
 # Most useful if configured to be launched with keyboard shortcuts.
 # Tested with XFCE with default positions for 3440x1440.
 #
-# https://github.com/thomasedoff/tilex.sh
+# https://github.com/thomas4f/tilex.sh
 #
 # Usage: ./tilex.sh name [index]
 # Example: ./tilex.sh left 0
